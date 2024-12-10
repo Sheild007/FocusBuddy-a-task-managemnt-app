@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FocusBuddy</string>
+    <string-array name="navigation_items">
+        <item>All Projects</item>
+        <item>All Tasks</item>
+        <item>Today</item>
+    </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>
