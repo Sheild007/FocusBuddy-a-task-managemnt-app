@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#b6b6b6</color>
+    <color name="dark_gray">#FF222222</color>
+    <color name="green">#FF00875A</color>
+    <color name="background_dark">#1a1a1a</color>
+    <color name="text_secondary">#696969</color>
+    <color name="accent_green">#019682</color>
+    <color name="button_stroke">#FF333333</color>
+    <color name="date_red">#FFE53935</color>
+    <color name="progress_background">#FF333333</color>
+    <color name="pill_background">#FF333333</color>
+    <color name="progress_track">#FF333333</color>
+</resources>
