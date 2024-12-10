@@ -4,6 +4,7 @@
     <item
         android:id="@+id/navAbout"
         android:title="About App"
+        android:icon="@drawable/ic_about"
         />
     <item
         android:id="@+id/navSettings"

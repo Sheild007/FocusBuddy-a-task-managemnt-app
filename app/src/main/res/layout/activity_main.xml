@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_dark"
     android:id="@+id/drawer_layout">
 
 
@@ -78,8 +79,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/background_dark"
+        android:backgroundTint="@color/background_dark"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
+        app:itemRippleColor="@color/background_dark"
         app:menu="@menu/drawer_menu"
-        android:fitsSystemWindows="true"/>
+        app:theme="@style/NavigationViewStyle" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
