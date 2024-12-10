@@ -13,4 +13,8 @@
     <color name="progress_background">#FF333333</color>
     <color name="pill_background">#FF333333</color>
     <color name="progress_track">#FF333333</color>
+    <color name="menu_item_text_color">#FFFFFF</color>
+    <color name="menu_item_background">#333333</color>
+    <color name="new_status_bar_color">#0d0823</color> <!-- Replace with your desired color -->
+
 </resources>
