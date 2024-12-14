@@ -2,6 +2,7 @@ package com.example.focusbuddy;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.net.ParseException;
@@ -68,25 +69,7 @@ public class projectDetails extends AppCompatActivity {
         projectList = loadProjects();
         if (projectPosition != -1 && projectPosition < projectList.size()) {
             Project project = projectList.get(projectPosition);
-
-            // Bind data to views
-            percentageText.setText(project.getCompletion() + "%");
-            daysLeftValue.setText(calculateDaysLeft(project.getStartDate(), project.getEndDate()));
-            targetValue.setText(project.getTasksPerDay() + " / day");
-            taskCount.setText(project.getCompletedTasks() + " of " + project.getTasks().size());
-            noteTextView.setText(project.getDescription());
-
-            // Set project name, start date, and end date
-            MaterialToolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitle(project.getProjectName());
-            startDateText.setText(project.getStartDate());
-            endDateText.setText(project.getEndDate().equals("") ? "No Deadline" : project.getEndDate());
-
-            // Display tasks dynamically
-            for (Task task : project.getTasks()) {
-                MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
-                tasksContainer.addView(taskCard);
-            }
+            updateUI(project);
 
             // Set click listeners for date pickers
             startDateText.setOnClickListener(v -> openDatePickerDialog(true));
@@ -98,6 +81,40 @@ public class projectDetails extends AppCompatActivity {
             // Set click listener for addTaskButton
             addTaskButton.setOnClickListener(v -> openAddTaskDialog());
         }
+    }
+
+    private void updateUI(Project project) {
+        // Bind data to views
+        percentageText.setText(calculateAverageCompletion(project) + "%");
+        daysLeftValue.setText(calculateDaysLeft(project.getStartDate(), project.getEndDate()));
+        targetValue.setText(project.getTasksPerDay() + " / day");
+        taskCount.setText(project.getCompletedTasks() + " of " + project.getTasks().size());
+        noteTextView.setText(project.getDescription());
+
+        // Set project name, start date, and end date
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(project.getProjectName());
+        startDateText.setText(project.getStartDate());
+        endDateText.setText(project.getEndDate().equals("") ? "No Deadline" : project.getEndDate());
+
+        // Display tasks dynamically
+        tasksContainer.removeAllViews();
+        for (Task task : project.getTasks()) {
+            MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
+            tasksContainer.addView(taskCard);
+        }
+    }
+
+    private int calculateAverageCompletion(Project project) {
+        List<Task> tasks = project.getTasks();
+        if (tasks.isEmpty()) {
+            return 0;
+        }
+        int totalCompletion = 0;
+        for (Task task : tasks) {
+            totalCompletion += task.getCompletion();
+        }
+        return totalCompletion / tasks.size();
     }
 
     private void openAddTaskDialog() {
@@ -116,6 +133,7 @@ public class projectDetails extends AppCompatActivity {
                 MaterialCardView taskCard = createTaskCard(newTask.getTaskName(), newTask.getCompletion());
                 tasksContainer.addView(taskCard);
                 saveProjects();
+                updateUI(projectList.get(projectPosition));
                 dialog.dismiss();
             } else {
                 Toast.makeText(this, "Task name cannot be empty", Toast.LENGTH_SHORT).show();
@@ -159,6 +177,7 @@ public class projectDetails extends AppCompatActivity {
             }
             daysLeftValue.setText(calculateDaysLeft(startDateText.getText().toString(), endDateText.getText().toString()));
             saveProjects();
+            updateUI(projectList.get(projectPosition));
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
@@ -233,6 +252,23 @@ public class projectDetails extends AppCompatActivity {
         taskLayout.addView(taskCompletionText);
         taskCard.addView(taskLayout);
 
+        // Add click listener to the card
+        taskCard.setOnClickListener(v -> {
+            int taskIndex = tasksContainer.indexOfChild(taskCard);
+            if (taskIndex != -1) {
+                Intent intent = new Intent(this, taskDetails.class);
+                intent.putExtra("projectPosition", projectPosition);
+                intent.putExtra("taskPosition", taskIndex);
+                startActivity(intent);
+            }
+        });
+
         return taskCard;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveProjects();
     }
 }
