@@ -160,4 +160,30 @@ public class Project implements Serializable {
                 ", tasks=" + tasks +
                 '}';
     }
+
+
+    // Project.java
+
+    public String toJson() {
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"id\":\"").append(id).append("\",");
+        json.append("\"projectName\":\"").append(projectName).append("\",");
+        json.append("\"description\":\"").append(description).append("\",");
+        json.append("\"startDate\":\"").append(startDate).append("\",");
+        json.append("\"endDate\":\"").append(endDate).append("\",");
+        json.append("\"completion\":").append(completion).append(",");
+        json.append("\"completedTasks\":").append(completedTasks).append(",");
+        json.append("\"tasksPerDay\":").append(tasksPerDay).append(",");
+        json.append("\"tasks\":[");
+        for (int i = 0; i < tasks.size(); i++) {
+            json.append(tasks.get(i).toJson());
+            if (i < tasks.size() - 1) {
+                json.append(",");
+            }
+        }
+        json.append("]");
+        json.append("}");
+        return json.toString();
+    }
 }
