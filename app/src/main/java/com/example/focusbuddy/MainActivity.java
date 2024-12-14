@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     // Declare constants for menu item IDs
     private static final int ID_ABOUT = R.id.navAbout;
     private static final int ID_SETTINGS = R.id.navSettings;
+    private AdView adView;
 
  //   @SuppressLint("MissingInflatedId")
     @Override
@@ -96,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }).attach();
+
+        // Initialize AdView
+        adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
 
 
