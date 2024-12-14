@@ -17,4 +17,5 @@
     <color name="menu_item_background">#333333</color>
     <color name="new_status_bar_color">#0d0823</color> <!-- Replace with your desired color -->
     <color name="card_background">#1E1E1E</color>
+    <color name="surface_dark">#1E1E1E</color>
 </resources>
