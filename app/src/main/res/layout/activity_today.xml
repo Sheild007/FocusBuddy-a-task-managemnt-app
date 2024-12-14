@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
-                android:text="Dec 09, 2024"
                 android:textColor="@color/text_secondary"
                 android:textSize="36sp" />
 
@@ -45,9 +44,9 @@
                     app:indicatorColor="@color/accent_green" />
 
                 <TextView
+                    android:id="@+id/progressText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0%"
                     android:textColor="@color/accent_green"
                     android:textSize="48sp"
                     android:layout_gravity="center" />
@@ -68,9 +67,9 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/todayTaskCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 of 4"
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginStart="16dp"
