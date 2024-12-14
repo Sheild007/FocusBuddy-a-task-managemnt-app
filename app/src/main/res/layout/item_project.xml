@@ -1,45 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/project"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardBackgroundColor="@color/dark_gray"
     app:cardCornerRadius="8dp">
 
-    <LinearLayout
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/project_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="horizontal">
+        android:background="@color/background_dark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <ImageView
-            android:id="@+id/projectIcon"
+            android:id="@+id/project_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="center_vertical" />
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Project folder"
+            app:srcCompat="@drawable/ic_folder" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/projectTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Test"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/projectDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray"
+                android:layout_marginTop="4dp"
+                android:text="Dec 09, 2024 - Dec 12, 2024"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -48,9 +56,10 @@
             android:id="@+id/projectProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:textSize="16sp"
-            android:text="0%" />
+            android:layout_marginStart="16dp"
+            android:text="0%"
+            android:textColor="@color/accent_green"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
