@@ -42,7 +42,7 @@ public class MainFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         projectList = loadProjects();
-        projectAdapter = new ProjectAdapter(projectList);
+        projectAdapter = new ProjectAdapter(getContext(), projectList);
         recyclerView.setAdapter(projectAdapter);
 
         v.findViewById(R.id.fabNewProject).setOnClickListener(new View.OnClickListener() {
@@ -89,8 +89,6 @@ public class MainFragment extends Fragment {
 
         dialog.show();
     }
-
-    // MainFragment.java
 
     private void saveProjects() {
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -2,6 +2,8 @@
 
 package com.example.focusbuddy;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
+    private Context context;
     private List<Project> projectList;
 
-    public ProjectAdapter(List<Project> projectList) {
+    public ProjectAdapter(Context context, List<Project> projectList) {
+        this.context = context;
         this.projectList = projectList;
     }
 
@@ -32,6 +36,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         holder.projectTitle.setText(project.getProjectName());
         holder.projectDate.setText(project.getStartDate() + " - " + project.getEndDate());
         holder.projectProgress.setText(project.getCompletion() + "%");
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, projectDetails.class);
+            intent.putExtra("projectPosition", position); // Pass the project position
+            context.startActivity(intent);
+        });
     }
 
     @Override

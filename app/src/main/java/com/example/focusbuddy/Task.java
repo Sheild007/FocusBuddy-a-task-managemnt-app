@@ -113,4 +113,27 @@ public class Task implements Serializable {
                 ", subTasks=" + subTasks +
                 '}';
     }
+
+    // Task.java
+
+    public String toJson() {
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"id\":\"").append(id).append("\",");
+        json.append("\"taskName\":\"").append(taskName).append("\",");
+        json.append("\"taskDescription\":\"").append(taskDescription).append("\",");
+        json.append("\"taskTime\":\"").append(taskTime).append("\",");
+        json.append("\"taskDate\":\"").append(taskDate).append("\",");
+        json.append("\"completion\":").append(completion).append(",");
+        json.append("\"subTasks\":[");
+        for (int i = 0; i < subTasks.size(); i++) {
+            json.append(subTasks.get(i).toJson());
+            if (i < subTasks.size() - 1) {
+                json.append(",");
+            }
+        }
+        json.append("]");
+        json.append("}");
+        return json.toString();
+    }
 }
