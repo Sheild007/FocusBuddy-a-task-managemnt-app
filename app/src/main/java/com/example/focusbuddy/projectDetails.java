@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
@@ -57,6 +60,11 @@ public class projectDetails extends AppCompatActivity {
         noteTextView = findViewById(R.id.noteTextView);
         addTaskButton = findViewById(R.id.addTaskButton);
 
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Retrieve project position from intent
         projectPosition = getIntent().getIntExtra("projectPosition", -1);
 
@@ -82,9 +90,23 @@ public class projectDetails extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void showPopupMenu(View view) {
-        PopupMenu popup = new PopupMenu(this, view);
+        // Create a ContextThemeWrapper with the custom style
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(this, R.style.CustomPopupMenu);
+
+        // Create the PopupMenu with the custom style
+        PopupMenu popup = new PopupMenu(contextThemeWrapper, view);
         popup.getMenuInflater().inflate(R.menu.menu_project_details, popup.getMenu());
+
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_edit_name) {
                 // Handle edit name action
@@ -98,8 +120,11 @@ public class projectDetails extends AppCompatActivity {
                 return false;
             }
         });
+
+        // Show the PopupMenu
         popup.show();
     }
+
 
     private void openEditNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -157,23 +182,27 @@ public class projectDetails extends AppCompatActivity {
 
     private void openDescriptionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update Description");
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_add_description_dialog, null);
+        TextInputEditText editTextDescription = dialogView.findViewById(R.id.editTextDescription);
 
-        final EditText input = new EditText(this);
-        input.setText(projectList.get(projectPosition).getDescription());
-        builder.setView(input);
+        // Set the current description in the EditText
+        editTextDescription.setText(projectList.get(projectPosition).getDescription());
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            String newDescription = input.getText().toString();
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        dialogView.findViewById(R.id.btnSave).setOnClickListener(v -> {
+            String newDescription = editTextDescription.getText().toString();
             projectList.get(projectPosition).setDescription(newDescription);
             noteTextView.setText(newDescription);
             saveProjects();
+            dialog.dismiss();
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-        builder.show();
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
-
     private void openDatePickerDialog(boolean isStartDate) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
