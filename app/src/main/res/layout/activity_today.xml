@@ -27,9 +27,12 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="36sp" />
 
+
+
+
             <FrameLayout
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="24dp">
 
@@ -37,11 +40,13 @@
                     android:id="@+id/progressIndicator"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:progress="0"
+                    app:indicatorColor="@color/accent_green"
                     app:indicatorSize="200dp"
-                    app:trackThickness="8dp"
                     app:trackColor="@color/progress_track"
-                    app:indicatorColor="@color/accent_green" />
+                    app:trackCornerRadius="3dp"
+                    app:trackThickness="6dp" />
 
                 <TextView
                     android:id="@+id/progressText"
@@ -52,6 +57,7 @@
                     android:layout_gravity="center" />
 
             </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

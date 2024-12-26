@@ -50,6 +50,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return null;
     }
 
+    public void updateTasks(List<Task> newTasks) {
+        this.taskList.clear();
+        this.taskList.addAll(newTasks);
+    }
+
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView taskTitle, taskDate, taskProgress, taskCategory;
 

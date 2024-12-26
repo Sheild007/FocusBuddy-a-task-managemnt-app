@@ -57,7 +57,13 @@ public class TodayFragment extends Fragment {
 
         return view;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTodayTasks();
+        updateProgress();
+        todayTaskAdapter.notifyDataSetChanged();
+    }
     private void setCurrentDate() {
         String currentDate = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
         currentDateTextView.setText(currentDate);
