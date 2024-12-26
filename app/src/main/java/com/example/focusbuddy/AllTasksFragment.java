@@ -36,6 +36,16 @@ public class AllTasksFragment extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        taskList = loadAllTasks();
+        taskAdapter.updateTasks(taskList);
+        taskAdapter.notifyDataSetChanged();
+    }
+
+
     private List<Task> loadAllTasks() {
         List<Task> allTasks = new ArrayList<>();
         for (Project project : projectList) {

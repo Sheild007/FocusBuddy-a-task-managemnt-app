@@ -138,6 +138,7 @@ public class taskDetails extends AppCompatActivity {
     }
 
     private void setupTextWatcher() {
+        // Description change listener
         descriptionEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -155,6 +156,12 @@ public class taskDetails extends AppCompatActivity {
         });
     }
 
+    private void showMenuOptions() {
+        // Implement menu options dialog/popup
+        Toast.makeText(this, "Menu options", Toast.LENGTH_SHORT).show();
+    }
+
+    // Date change in showDateTimePicker method
     private void showDateTimePicker() {
         final Calendar currentDate = Calendar.getInstance();
         new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
@@ -171,11 +178,6 @@ public class taskDetails extends AppCompatActivity {
                 saveProjects();
             }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
-    }
-
-    private void showMenuOptions() {
-        // Implement menu options dialog/popup
-        Toast.makeText(this, "Menu options", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -209,6 +211,9 @@ public class taskDetails extends AppCompatActivity {
                 .edit();
         editor.putInt("ProjectCount", projectList.size());
         editor.apply();
+
+        projectList.get(projectPosition).getTasks().set(taskPosition, currentTask);
+
 
         for (int i = 0; i < projectList.size(); i++) {
             try (FileOutputStream fos = openFileOutput("project_" + i + ".dat", Context.MODE_PRIVATE);

@@ -55,6 +55,14 @@ public class MainFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        projectList.clear();
+        projectList.addAll(loadProjects());
+        projectAdapter.notifyDataSetChanged();
+    }
+
     private void showAddProjectDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_project, null);
         TextInputEditText editTextProjectName = dialogView.findViewById(R.id.editTextProjectName);

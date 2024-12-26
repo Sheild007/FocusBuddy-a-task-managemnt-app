@@ -1,26 +1,27 @@
 package com.example.focusbuddy;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
-import android.net.ParseException;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,15 +33,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.AlertDialog;
-import android.widget.EditText;
-import android.view.LayoutInflater;
-import android.view.View;
-import com.google.android.material.textfield.TextInputEditText;
-
 public class projectDetails extends AppCompatActivity {
 
-    private TextView percentageText, changeText, daysLeftValue, targetValue, taskCount, startDateText, endDateText, noteTextView;
+    private TextView percentageText, daysLeftValue, targetValue, taskCount, startDateText, endDateText, noteTextView;
     private LinearLayout tasksContainer;
     private List<Project> projectList;
     private int projectPosition;
@@ -80,41 +75,56 @@ public class projectDetails extends AppCompatActivity {
 
             // Set click listener for addTaskButton
             addTaskButton.setOnClickListener(v -> openAddTaskDialog());
+
+            // Set click listener for menuButton
+            ImageView menuButton = findViewById(R.id.menuButton);
+            menuButton.setOnClickListener(v -> showPopupMenu(v));
         }
     }
 
-    private void updateUI(Project project) {
-        // Bind data to views
-        percentageText.setText(calculateAverageCompletion(project) + "%");
-        daysLeftValue.setText(calculateDaysLeft(project.getStartDate(), project.getEndDate()));
-        targetValue.setText(project.getTasksPerDay() + " / day");
-        taskCount.setText(project.getCompletedTasks() + " of " + project.getTasks().size());
-        noteTextView.setText(project.getDescription());
-
-        // Set project name, start date, and end date
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(project.getProjectName());
-        startDateText.setText(project.getStartDate());
-        endDateText.setText(project.getEndDate().equals("") ? "No Deadline" : project.getEndDate());
-
-        // Display tasks dynamically
-        tasksContainer.removeAllViews();
-        for (Task task : project.getTasks()) {
-            MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
-            tasksContainer.addView(taskCard);
-        }
+    private void showPopupMenu(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+        popup.getMenuInflater().inflate(R.menu.menu_project_details, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_edit_name) {
+                // Handle edit name action
+                openEditNameDialog();
+                return true;
+            } else if (item.getItemId() == R.id.action_delete_project) {
+                // Handle delete project action
+                deleteProject();
+                return true;
+            } else {
+                return false;
+            }
+        });
+        popup.show();
     }
 
-    private int calculateAverageCompletion(Project project) {
-        List<Task> tasks = project.getTasks();
-        if (tasks.isEmpty()) {
-            return 0;
-        }
-        int totalCompletion = 0;
-        for (Task task : tasks) {
-            totalCompletion += task.getCompletion();
-        }
-        return totalCompletion / tasks.size();
+    private void openEditNameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Project Name");
+
+        final EditText input = new EditText(this);
+        input.setText(projectList.get(projectPosition).getProjectName());
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String newName = input.getText().toString();
+            projectList.get(projectPosition).setProjectName(newName);
+            MaterialToolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle(newName);
+            saveProjects();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void deleteProject() {
+        projectList.remove(projectPosition);
+        saveProjects();
+        finish(); // Close the activity
     }
 
     private void openAddTaskDialog() {
@@ -203,6 +213,7 @@ public class projectDetails extends AppCompatActivity {
         editor.putInt("ProjectCount", projectList.size());
         editor.apply();
 
+        projectList.get(projectPosition).setCompletion(calculateAverageCompletion(projectList.get(projectPosition)));
         for (int i = 0; i < projectList.size(); i++) {
             try (FileOutputStream fos = openFileOutput("project_" + i + ".dat", Context.MODE_PRIVATE);
                  ObjectOutputStream oos = new ObjectOutputStream(fos)) {
@@ -224,7 +235,7 @@ public class projectDetails extends AppCompatActivity {
                 long daysLeft = differenceInMillis / (1000 * 60 * 60 * 24);
                 return String.valueOf(daysLeft);
             }
-        } catch (ParseException | java.text.ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "-";
@@ -266,9 +277,53 @@ public class projectDetails extends AppCompatActivity {
         return taskCard;
     }
 
+    private void updateUI(Project project) {
+        // Bind data to views
+        percentageText.setText(calculateAverageCompletion(project) + "%");
+        daysLeftValue.setText(calculateDaysLeft(project.getStartDate(), project.getEndDate()));
+        targetValue.setText(project.getTasksPerDay() + " / day");
+        taskCount.setText(project.getCompletedTasks() + " of " + project.getTasks().size());
+        noteTextView.setText(project.getDescription());
+
+        // Set project name, start date, and end date
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(project.getProjectName());
+        startDateText.setText(project.getStartDate());
+        endDateText.setText(project.getEndDate().equals("") ? "No Deadline" : project.getEndDate());
+
+        // Display tasks dynamically
+        tasksContainer.removeAllViews();
+        for (Task task : project.getTasks()) {
+            MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
+            tasksContainer.addView(taskCard);
+        }
+    }
+
+    private int calculateAverageCompletion(Project project) {
+        List<Task> tasks = project.getTasks();
+        if (tasks.isEmpty()) {
+            return 0;
+        }
+        int totalCompletion = 0;
+        for (Task task : tasks) {
+            totalCompletion += task.getCompletion();
+        }
+        return totalCompletion / tasks.size();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         saveProjects();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (projectPosition != -1 && projectPosition < projectList.size()) {
+            projectList = loadProjects();
+            Project project = projectList.get(projectPosition);
+            updateUI(project);
+        }
     }
 }
