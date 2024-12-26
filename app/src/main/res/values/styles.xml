@@ -6,4 +6,9 @@
         <item name="itemBackground">@color/background_dark</item>
 
     </style>
+
+
+    <style name="CustomPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/background_dark</item>
+    </style>
 </resources>
