@@ -97,23 +97,9 @@ public class Login extends AppCompatActivity {
     }
 
     private void signUp() {
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign up success, update UI with the signed-in user's information
-                            startMainActivity();
-                        } else {
-                            // If sign up fails, display a message to the user.
-                            Toast.makeText(Login.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        Intent intent = new Intent(Login.this, signup.class);
+        startActivity(intent);
     }
 
     private void googleSignIn() {
