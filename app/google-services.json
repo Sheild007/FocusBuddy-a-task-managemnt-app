@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "85797751906",
+    "firebase_url": "https://focusbuddy-e2ae2-default-rtdb.firebaseio.com",
+    "project_id": "focusbuddy-e2ae2",
+    "storage_bucket": "focusbuddy-e2ae2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85797751906:android:6868c3f6916683c42fd53b",
+        "android_client_info": {
+          "package_name": "com.example.focusbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85797751906-praa23thqqrl7sf93pnnq71f5po5bpav.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.focusbuddy",
+            "certificate_hash": "c503b52e0bf727cb557a117604ef5a21cadfc5f9"
+          }
+        },
+        {
+          "client_id": "85797751906-cgl0tqb8uc2comgr6acn05p0lk50d9vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXscGdvnq3Pp7ruIj6NxCZ-mQQfGGkuOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85797751906-53g83dj2au34uelpla36lhod7m384dc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
