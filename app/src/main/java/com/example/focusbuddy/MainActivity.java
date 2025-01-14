@@ -1,10 +1,8 @@
 package com.example.focusbuddy;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,39 +10,44 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-
-    // Declare constants for menu item IDs
-    private static final int ID_ABOUT = R.id.navAbout;
-    private static final int ID_SETTINGS = R.id.navSettings;
     private AdView adView;
+    private FirebaseAuth mAuth;
 
- //   @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        // Check if user is signed in (non-null)
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // Not signed in, launch the Login activity
+            startActivity(new Intent(this, Login.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
-
-
 
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,16 +63,14 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
 
-                if (itemId == ID_ABOUT) {
+                if (itemId == R.id.navAbout) {
                     Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_SHORT).show();
-                } else if (itemId == ID_SETTINGS) {
+                } else if (itemId == R.id.navSettings) {
                     Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
                 }
 
@@ -101,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
         adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-
-
-
     }
 
     @Override
@@ -114,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
+    // Add a method to handle sign out
+    private void signOut() {
+        mAuth.signOut();
+        startActivity(new Intent(this, Login.class));
+        finish();
+    }
 }
