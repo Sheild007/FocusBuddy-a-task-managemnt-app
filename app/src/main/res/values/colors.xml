@@ -20,6 +20,7 @@
     <color name="card_background">#1E1E1E</color>
     <color name="surface_dark">#1E1E1E</color>
     <color name="date_background">#33FFFFFF</color>
+    <color name="notification_background">#FFFFFF</color>
 
     <!-- New Primary and Secondary Colors -->
     <color name="primary">#0d0823</color>
