@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-    private AdView adView;
     private FirebaseAuth mAuth;
 
     @Override
@@ -98,10 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attach();
 
-        // Initialize AdView
-        adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+
     }
 
     @Override
