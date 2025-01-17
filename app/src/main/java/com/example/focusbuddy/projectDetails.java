@@ -52,7 +52,7 @@ public class projectDetails extends AppCompatActivity {
         // Initialize views
         percentageText = findViewById(R.id.percentageText);
         daysLeftValue = findViewById(R.id.daysLeftValue);
-        targetValue = findViewById(R.id.targetValue);
+        //targetValue = findViewById(R.id.targetValue);
         taskCount = findViewById(R.id.taskCount);
         tasksContainer = findViewById(R.id.tasksContainer);
         startDateText = findViewById(R.id.startDateText);
@@ -317,7 +317,7 @@ public class projectDetails extends AppCompatActivity {
         // Bind data to views
         percentageText.setText(calculateAverageCompletion(project) + "%");
         daysLeftValue.setText(calculateDaysLeft(project.getStartDate(), project.getEndDate()));
-        targetValue.setText(project.getTasksPerDay() + " / day");
+      // targetValue.setText(project.getTasksPerDay() + " / day");
         taskCount.setText(project.getCompletedTasks() + " of " + project.getTasks().size());
         noteTextView.setText(project.getDescription());
 
