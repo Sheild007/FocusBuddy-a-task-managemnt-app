@@ -254,21 +254,28 @@ public class projectDetails extends AppCompatActivity {
         }
     }
 
-    private String calculateDaysLeft(String startDate, String endDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        try {
-            Date start = sdf.parse(startDate);
-            Date end = sdf.parse(endDate);
-            if (start != null && end != null) {
-                long differenceInMillis = end.getTime() - start.getTime();
-                long daysLeft = differenceInMillis / (1000 * 60 * 60 * 24);
-                return String.valueOf(daysLeft);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "-";
-    }
+   private String calculateDaysLeft(String startDate, String endDate) {
+       SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+       try {
+           Date current = new Date();
+           Date end = sdf.parse(endDate);
+           if (end != null) {
+               long differenceInMillis = end.getTime() - current.getTime();
+               long daysLeft = differenceInMillis / (1000 * 60 * 60 * 24);
+
+               if (daysLeft > 0) {
+                   return daysLeft + " days left";
+               } else if (daysLeft == 0) {
+                   return "Deadline is today!";
+               } else {
+                   return "Deadline already passed";
+               }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       return "-";
+   }
 
     private MaterialCardView createTaskCard(String taskName, int completion) {
         MaterialCardView taskCard = new MaterialCardView(this);
