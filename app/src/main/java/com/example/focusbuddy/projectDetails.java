@@ -334,10 +334,10 @@ public class projectDetails extends AppCompatActivity {
         tasksContainer.removeAllViews();
         for (Task task : project.getTasks())
         {
-            if(!task.isDeleted()) {
+
                 MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
                 tasksContainer.addView(taskCard);
-            }
+
         }
     }
 
@@ -364,7 +364,18 @@ public class projectDetails extends AppCompatActivity {
         super.onResume();
         if (projectPosition != -1 && projectPosition < projectList.size()) {
             projectList = loadProjects();
+
             Project project = projectList.get(projectPosition);
+            //remove task from projectlist
+            for(int i = 0; i < project.getTasks().size(); i++)
+            {
+                if(project.getTasks().get(i).isDeleted())
+                {
+                    project.getTasks().remove(i);
+                }
+            }
+
+
             updateUI(project);
         }
     }
