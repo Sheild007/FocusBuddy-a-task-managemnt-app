@@ -1,0 +1,84 @@
+{
+  "quotes": [
+    {
+      "type": "early_reminder",
+      "messages": [
+        "Start early, stay ahead.",
+        "Consistency is the key to success.",
+        "Small efforts today lead to big achievements tomorrow.",
+        "Your journey to success begins now.",
+        "A little progress each day adds up to big results.",
+        "Start strong, and the rest will follow.",
+        "The best way to predict the future is to create it today.",
+        "A goal without a plan is just a wish. Start planning now.",
+        "Success starts with the first step. Take it today.",
+        "The earlier you start, the more time you have to shine.",
+        "Your future self will thank you for starting now.",
+        "Preparation is the foundation of achievement.",
+        "The time to act is now—don’t wait!",
+        "Starting early is the first step toward finishing strong.",
+        "Big dreams require early action."
+      ]
+    },
+    {
+      "type": "midway_reminder",
+      "messages": [
+        "You’ve made good progress. Keep it up!",
+        "Halfway there! Stay focused and persistent.",
+        "Don’t stop now—you’re doing great!",
+        "Keep pushing forward; success is within reach.",
+        "Every step you take brings you closer to your goal.",
+        "You’re building momentum. Keep going!",
+        "Progress isn’t always fast, but it’s always progress.",
+        "Stay determined and finish what you started.",
+        "Your hard work is paying off. Stay the course.",
+        "You’re in the zone. Keep up the great work!",
+        "Persistence beats resistance. Keep moving forward.",
+        "Half the battle is staying consistent. You’re doing it!",
+        "Your dedication is inspiring. Keep it going!",
+        "Don’t lose sight of the goal. You’re almost there.",
+        "Stay steady, and you’ll achieve greatness."
+      ]
+    },
+    {
+      "type": "close_to_deadline",
+      "messages": [
+        "The finish line is near. Push through!",
+        "You’re almost there—stay focused and finish strong.",
+        "A final push is all it takes. Keep going!",
+        "Don’t stop now; success is within your grasp.",
+        "The deadline is close, but so is your achievement.",
+        "You’re so close to victory. Keep up the effort!",
+        "It’s crunch time—give it your best shot!",
+        "Now’s the time to focus and shine.",
+        "You’ve worked hard. Now finish what you started.",
+        "Your dedication will pay off. Stay the course.",
+        "The final effort is the hardest but most rewarding.",
+        "Success is just one step away. Take it!",
+        "All your effort leads to this moment. Don’t stop.",
+        "Every great achievement starts with a strong finish.",
+        "You’re at the home stretch. Give it your all!"
+      ]
+    },
+    {
+      "type": "on_deadline",
+      "messages": [
+        "Today’s the day to show what you’re made of!",
+        "It’s your moment to shine. Make it count!",
+        "The deadline is here. Finish strong and proud.",
+        "You’ve got this—time to cross the finish line.",
+        "Your hard work has led to this. Complete it with pride.",
+        "It’s all about focus now. You’re almost there.",
+        "The final step is the most important. Take it now.",
+        "You’re ready. It’s time to make it happen.",
+        "Your effort today defines your success. Go for it!",
+        "The goal is within reach. Give it your best shot!",
+        "This is the moment to put your plan into action.",
+        "Success is yours for the taking. Finish what you started.",
+        "The deadline is here. Rise to the challenge!",
+        "Today is the day to achieve your goal. Go for it!",
+        "You’re capable of great things. Prove it today!"
+      ]
+    }
+  ]
+}

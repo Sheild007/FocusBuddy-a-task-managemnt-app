@@ -1,5 +1,6 @@
 package com.example.focusbuddy;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -9,12 +10,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,12 +55,18 @@ public class taskDetails extends AppCompatActivity {
     private TextInputEditText descriptionEditText;
     private ImageView editButton;
     private ImageView menuButton;
+    private Spinner prioritySpinner;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
 
+        prioritySpinner = findViewById(R.id.prioritySpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prioritySpinner.setAdapter(adapter);
         initializeViews();
         setupToolbar();
         loadTaskData();
@@ -117,6 +126,9 @@ public class taskDetails extends AppCompatActivity {
 
             // Update description
             descriptionEditText.setText(currentTask.getTaskDescription());
+
+            //update priority spiner
+            prioritySpinner.setSelection(currentTask.getPriority() - 1);
         }
     }
 
@@ -143,6 +155,21 @@ public class taskDetails extends AppCompatActivity {
         });
 
         deadlineTextView.setOnClickListener(v -> showDateTimePicker());
+
+        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int priority = position + 1; // Assuming priority values are 1-5
+                currentTask.setPriority(priority);
+                saveProjects();
+                updateUI();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
     }
 
     private void setupTextWatcher() {
@@ -190,32 +217,22 @@ public class taskDetails extends AppCompatActivity {
 
     private void openEditNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_project, null);
+        builder.setTitle("Edit Task Name");
 
-        // Modify the TextView to display "Edit Project Name"
-        TextView txtNewProject = dialogView.findViewById(R.id.txt_newProject);
-        txtNewProject.setText("Edit Task Name");
+        final EditText input = new EditText(this);
+        input.setText(projectList.get(projectPosition).getTasks().get(taskPosition).getTaskName());
+        builder.setView(input);
 
-        // Set the current project name in the EditText
-        TextInputEditText editTextProjectName = dialogView.findViewById(R.id.editTextProjectName);
-        editTextProjectName.setText(projectList.get(projectPosition).getTasks().get(taskPosition).getTaskName());
-
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-
-        // Set the OK button click listener
-        dialogView.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            String newName = editTextProjectName.getText().toString();
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String newName = input.getText().toString();
             projectList.get(projectPosition).getTasks().get(taskPosition).setTaskName(newName);
-            updateUI();
+            MaterialToolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle(newName);
             saveProjects();
-            dialog.dismiss();
         });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-        // Set the Cancel button click listener
-        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
-
-        dialog.show();
+        builder.show();
     }
 
     @Override
@@ -258,9 +275,7 @@ public class taskDetails extends AppCompatActivity {
         editor.putInt("ProjectCount", projectList.size());
         editor.apply();
 
-      
-            projectList.get(projectPosition).getTasks().set(taskPosition, currentTask);
-        
+        projectList.get(projectPosition).getTasks().set(taskPosition, currentTask);
 
         for (int i = 0; i < projectList.size(); i++) {
             try (FileOutputStream fos = openFileOutput("project_" + i + ".dat", Context.MODE_PRIVATE);
@@ -279,14 +294,9 @@ public class taskDetails extends AppCompatActivity {
         saveProjects();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_task_details, menu);
         return true;
     }
-
-
-
-
 }

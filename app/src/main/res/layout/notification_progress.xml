@@ -21,20 +21,22 @@
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/taskNameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="test task"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    android:id="@+id/taskNameTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:text="test task"
+    android:textColor="@color/white"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    android:maxLines="1"
+    android:ellipsize="end" />
 
     <TextView
         android:id="@+id/deadlineTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="14 jan 2025"
         android:textColor="@color/text_secondary"
         android:textSize="14sp" />
@@ -57,40 +59,40 @@
             android:id="@+id/button25"
             style="@style/ProgressButtonDark"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/accent_green"
             android:text="25%"
-            android:textSize="14sp" />
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button50"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:layout_weight="1"
             android:text="50%"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:layout_marginEnd="4dp"
             style="@style/ProgressButtonDark"/>
 
         <Button
             android:id="@+id/button75"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:layout_weight="1"
             android:text="75%"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:layout_marginEnd="4dp"
             style="@style/ProgressButtonDark"/>
 
         <Button
             android:id="@+id/button100"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:layout_weight="1"
             android:text="100%"
-            android:textSize="14sp"
+            android:textSize="10sp"
             style="@style/ProgressButtonDark"/>
 
     </LinearLayout>
