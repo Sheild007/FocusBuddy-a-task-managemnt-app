@@ -112,7 +112,7 @@ public class projectDetails extends AppCompatActivity {
                 // Handle edit name action
                 openEditNameDialog();
                 return true;
-            } else if (item.getItemId() == R.id.action_delete_project) {
+            } else if (item.getItemId() == R.id.action_delete_task) {
                 // Handle delete project action
                 deleteProject();
                 return true;
