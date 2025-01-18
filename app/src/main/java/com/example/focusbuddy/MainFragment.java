@@ -60,6 +60,7 @@ public class MainFragment extends Fragment {
         super.onResume();
         projectList.clear();
         projectList.addAll(loadProjects());
+
         projectAdapter.notifyDataSetChanged();
     }
 
@@ -121,7 +122,9 @@ public class MainFragment extends Fragment {
         for (int i = 0; i < projectCount; i++) {
             try (FileInputStream fis = requireContext().openFileInput("project_" + i + ".dat");
                  ObjectInputStream ois = new ObjectInputStream(fis)) {
-                projects.add((Project) ois.readObject());
+                Project project = (Project) ois.readObject();
+                if(!project.isDeleted())
+                projects.add(project);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(requireContext(), "Failed to load project " + i, Toast.LENGTH_SHORT).show();
