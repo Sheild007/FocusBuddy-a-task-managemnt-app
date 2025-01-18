@@ -1,20 +1,26 @@
 package com.example.focusbuddy;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
@@ -130,7 +136,7 @@ public class taskDetails extends AppCompatActivity {
                 currentTask.setCompletion(progress);
                 progressIndicator.setProgress(progress);
                 progressTextView.setText(progress + "%");
-                saveProjects();
+                saveProjects(false);
             }
         });
 
@@ -150,7 +156,7 @@ public class taskDetails extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (currentTask != null) {
                     currentTask.setTaskDescription(s.toString());
-                    saveProjects();
+                    saveProjects(false);
                 }
             }
         });
@@ -175,15 +181,43 @@ public class taskDetails extends AppCompatActivity {
                 String formattedDate = sdf.format(currentDate.getTime());
                 currentTask.setTaskDate(formattedDate);
                 deadlineTextView.setText(formattedDate);
-                saveProjects();
+                saveProjects(false);
             }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+
+    private void openEditNameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Task Name");
+
+        final EditText input = new EditText(this);
+        input.setText(projectList.get(projectPosition).getTasks().get(taskPosition).getTaskName());
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String newName = input.getText().toString();
+            projectList.get(projectPosition).getTasks().get(taskPosition).setTaskName(newName);
+            MaterialToolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle(newName);
+            saveProjects(false);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return true;
+        } else if (item.getItemId() == R.id.action_delete_task) {
+            projectList.get(projectPosition).getTasks().remove(taskPosition);
+            saveProjects(true);
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        } else if (item.getItemId() == R.id.action_edit_name) {
+            openEditNameDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -206,14 +240,15 @@ public class taskDetails extends AppCompatActivity {
         return projects;
     }
 
-    private void saveProjects() {
+    private void saveProjects(boolean isDelete) {
         SharedPreferences.Editor editor = getSharedPreferences("ProjectPrefs", Context.MODE_PRIVATE)
                 .edit();
         editor.putInt("ProjectCount", projectList.size());
         editor.apply();
 
-        projectList.get(projectPosition).getTasks().set(taskPosition, currentTask);
-
+        if (!isDelete && currentTask != null) {
+            projectList.get(projectPosition).getTasks().set(taskPosition, currentTask);
+        }
 
         for (int i = 0; i < projectList.size(); i++) {
             try (FileOutputStream fos = openFileOutput("project_" + i + ".dat", Context.MODE_PRIVATE);
@@ -229,6 +264,17 @@ public class taskDetails extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        saveProjects();
+        saveProjects(false);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_task_details, menu);
+        return true;
+    }
+
+
+
+
 }

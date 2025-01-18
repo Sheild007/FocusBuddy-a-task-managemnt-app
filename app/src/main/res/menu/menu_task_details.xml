@@ -7,7 +7,7 @@
         app:popupTheme="@style/CustomPopupMenu" />
     <item
         android:id="@+id/action_delete_task"
-        android:title="Delete Project"
+        android:title="Delete task"
         app:actionViewClass="android.widget.PopupMenu"
         app:popupTheme="@style/CustomPopupMenu" />
 </menu>
