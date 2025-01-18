@@ -136,7 +136,7 @@ public class taskDetails extends AppCompatActivity {
                 currentTask.setCompletion(progress);
                 progressIndicator.setProgress(progress);
                 progressTextView.setText(progress + "%");
-                saveProjects(false);
+                saveProjects();
             }
         });
 
@@ -156,7 +156,7 @@ public class taskDetails extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (currentTask != null) {
                     currentTask.setTaskDescription(s.toString());
-                    saveProjects(false);
+                    saveProjects();
                 }
             }
         });
@@ -181,7 +181,7 @@ public class taskDetails extends AppCompatActivity {
                 String formattedDate = sdf.format(currentDate.getTime());
                 currentTask.setTaskDate(formattedDate);
                 deadlineTextView.setText(formattedDate);
-                saveProjects(false);
+                saveProjects();
             }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -200,7 +200,7 @@ public class taskDetails extends AppCompatActivity {
             projectList.get(projectPosition).getTasks().get(taskPosition).setTaskName(newName);
             MaterialToolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setTitle(newName);
-            saveProjects(false);
+            saveProjects();
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
@@ -213,7 +213,7 @@ public class taskDetails extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.action_delete_task) {
             projectList.get(projectPosition).getTasks().get(taskPosition).setDeleted(true);
-
+            saveProjects();
             onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.action_edit_name) {
@@ -240,15 +240,15 @@ public class taskDetails extends AppCompatActivity {
         return projects;
     }
 
-    private void saveProjects(boolean isDelete) {
+    private void saveProjects() {
         SharedPreferences.Editor editor = getSharedPreferences("ProjectPrefs", Context.MODE_PRIVATE)
                 .edit();
         editor.putInt("ProjectCount", projectList.size());
         editor.apply();
 
-        if (!isDelete && currentTask != null) {
+      
             projectList.get(projectPosition).getTasks().set(taskPosition, currentTask);
-        }
+        
 
         for (int i = 0; i < projectList.size(); i++) {
             try (FileOutputStream fos = openFileOutput("project_" + i + ".dat", Context.MODE_PRIVATE);
@@ -264,7 +264,7 @@ public class taskDetails extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        saveProjects(false);
+        saveProjects();
     }
 
 
