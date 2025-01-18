@@ -212,9 +212,9 @@ public class taskDetails extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.action_delete_task) {
-            projectList.get(projectPosition).getTasks().remove(taskPosition);
-            saveProjects(true);
-            NavUtils.navigateUpFromSameTask(this);
+            projectList.get(projectPosition).getTasks().get(taskPosition).setDeleted(true);
+
+            onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.action_edit_name) {
             openEditNameDialog();
