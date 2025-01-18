@@ -108,13 +108,16 @@ public class projectDetails extends AppCompatActivity {
         popup.getMenuInflater().inflate(R.menu.menu_project_details, popup.getMenu());
 
         popup.setOnMenuItemClickListener(item -> {
+
+
             if (item.getItemId() == R.id.action_edit_name) {
                 // Handle edit name action
                 openEditNameDialog();
                 return true;
             } else if (item.getItemId() == R.id.action_delete_task) {
                 // Handle delete project action
-                deleteProject();
+                projectList.get(projectPosition).setDeleted(true);
+                onBackPressed();
                 return true;
             } else {
                 return false;
@@ -329,9 +332,12 @@ public class projectDetails extends AppCompatActivity {
 
         // Display tasks dynamically
         tasksContainer.removeAllViews();
-        for (Task task : project.getTasks()) {
-            MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
-            tasksContainer.addView(taskCard);
+        for (Task task : project.getTasks())
+        {
+            if(!task.isDeleted()) {
+                MaterialCardView taskCard = createTaskCard(task.getTaskName(), task.getCompletion());
+                tasksContainer.addView(taskCard);
+            }
         }
     }
 

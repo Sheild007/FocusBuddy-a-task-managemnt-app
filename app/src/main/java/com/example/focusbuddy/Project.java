@@ -1,5 +1,3 @@
-// Project.java
-
 package com.example.focusbuddy;
 
 import java.io.Serializable;
@@ -21,6 +19,7 @@ public class Project implements Serializable {
     private int completedTasks; // Number of tasks completed
     private int tasksPerDay;    // Number of tasks per day count
     private List<Task> tasks;   // Multiple tasks in the project
+    private boolean isDeleted = false; // Flag to mark project as deleted
 
     // Constructor
     public Project(String projectName, String description, String endDate, int tasksPerDay) {
@@ -117,6 +116,14 @@ public class Project implements Serializable {
         return tasks;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     // Add a task to the project
     public void addTask(Task task) {
         tasks.add(task);
@@ -158,12 +165,11 @@ public class Project implements Serializable {
                 ", completedTasks=" + completedTasks +
                 ", tasksPerDay=" + tasksPerDay +
                 ", tasks=" + tasks +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 
-
-    // Project.java
-
+    // Convert project to JSON format
     public String toJson() {
         StringBuilder json = new StringBuilder();
         json.append("{");
@@ -175,6 +181,7 @@ public class Project implements Serializable {
         json.append("\"completion\":").append(completion).append(",");
         json.append("\"completedTasks\":").append(completedTasks).append(",");
         json.append("\"tasksPerDay\":").append(tasksPerDay).append(",");
+        json.append("\"isDeleted\":").append(isDeleted).append(",");
         json.append("\"tasks\":[");
         for (int i = 0; i < tasks.size(); i++) {
             json.append(tasks.get(i).toJson());

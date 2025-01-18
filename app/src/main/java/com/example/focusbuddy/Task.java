@@ -1,5 +1,3 @@
-// Task.java
-
 package com.example.focusbuddy;
 
 import java.io.Serializable;
@@ -16,6 +14,7 @@ public class Task implements Serializable {
     private String taskDate;
     private int completion; // Completion percentage (0-100)
     private List<Task> subTasks; // Dynamic array for subtasks
+    private boolean isDeleted = false; // Flag to mark task as deleted
 
     // Constructor
     public Task(String taskName, String taskDescription, String taskTime, String taskDate, int completion) {
@@ -87,6 +86,14 @@ public class Task implements Serializable {
         return subTasks;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     // Methods to manage subtasks
     public void addSubTask(Task subTask) {
         subTasks.add(subTask);
@@ -111,11 +118,11 @@ public class Task implements Serializable {
                 ", taskDate='" + taskDate + '\'' +
                 ", completion=" + completion +
                 ", subTasks=" + subTasks +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 
-    // Task.java
-
+    // Convert task to JSON format
     public String toJson() {
         StringBuilder json = new StringBuilder();
         json.append("{");
@@ -125,6 +132,7 @@ public class Task implements Serializable {
         json.append("\"taskTime\":\"").append(taskTime).append("\",");
         json.append("\"taskDate\":\"").append(taskDate).append("\",");
         json.append("\"completion\":").append(completion).append(",");
+        json.append("\"isDeleted\":").append(isDeleted).append(",");
         json.append("\"subTasks\":[");
         for (int i = 0; i < subTasks.size(); i++) {
             json.append(subTasks.get(i).toJson());
