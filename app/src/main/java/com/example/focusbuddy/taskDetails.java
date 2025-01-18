@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -186,26 +188,36 @@ public class taskDetails extends AppCompatActivity {
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-
     private void openEditNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Task Name");
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_project, null);
 
-        final EditText input = new EditText(this);
-        input.setText(projectList.get(projectPosition).getTasks().get(taskPosition).getTaskName());
-        builder.setView(input);
+        // Modify the TextView to display "Edit Project Name"
+        TextView txtNewProject = dialogView.findViewById(R.id.txt_newProject);
+        txtNewProject.setText("Edit Task Name");
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            String newName = input.getText().toString();
+        // Set the current project name in the EditText
+        TextInputEditText editTextProjectName = dialogView.findViewById(R.id.editTextProjectName);
+        editTextProjectName.setText(projectList.get(projectPosition).getTasks().get(taskPosition).getTaskName());
+
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        // Set the OK button click listener
+        dialogView.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            String newName = editTextProjectName.getText().toString();
             projectList.get(projectPosition).getTasks().get(taskPosition).setTaskName(newName);
-            MaterialToolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitle(newName);
+            updateUI();
             saveProjects();
+            dialog.dismiss();
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-        builder.show();
+        // Set the Cancel button click listener
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

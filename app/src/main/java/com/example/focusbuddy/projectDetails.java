@@ -1,5 +1,6 @@
 package com.example.focusbuddy;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -99,6 +100,7 @@ public class projectDetails extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void showPopupMenu(View view) {
         // Create a ContextThemeWrapper with the custom style
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(this, R.style.CustomPopupMenu);
@@ -108,8 +110,6 @@ public class projectDetails extends AppCompatActivity {
         popup.getMenuInflater().inflate(R.menu.menu_project_details, popup.getMenu());
 
         popup.setOnMenuItemClickListener(item -> {
-
-
             if (item.getItemId() == R.id.action_edit_name) {
                 // Handle edit name action
                 openEditNameDialog();
@@ -129,24 +129,36 @@ public class projectDetails extends AppCompatActivity {
     }
 
 
+
     private void openEditNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Project Name");
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_project, null);
 
-        final EditText input = new EditText(this);
-        input.setText(projectList.get(projectPosition).getProjectName());
-        builder.setView(input);
+        // Modify the TextView to display "Edit Project Name"
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView txtNewProject = dialogView.findViewById(R.id.txt_newProject);
+        txtNewProject.setText("Edit Project Name");
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            String newName = input.getText().toString();
+        // Set the current project name in the EditText
+        TextInputEditText editTextProjectName = dialogView.findViewById(R.id.editTextProjectName);
+        editTextProjectName.setText(projectList.get(projectPosition).getProjectName());
+
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        // Set the OK button click listener
+        dialogView.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            String newName = editTextProjectName.getText().toString();
             projectList.get(projectPosition).setProjectName(newName);
             MaterialToolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setTitle(newName);
             saveProjects();
+            dialog.dismiss();
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-        builder.show();
+        // Set the Cancel button click listener
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void deleteProject() {
