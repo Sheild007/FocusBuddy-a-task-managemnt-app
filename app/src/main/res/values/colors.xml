@@ -14,23 +14,23 @@
     <color name="progress_background">#FF333333</color>
     <color name="pill_background">#FF333333</color>
     <color name="progress_track">#FF333333</color>
-    <color name="menu_item_text_color">#FFFFFF</color>
-    <color name="menu_item_background">#333333</color>
+
     <color name="new_status_bar_color">#0d0823</color> <!-- Replace with your desired color -->
     <color name="card_background">#1E1E1E</color>
     <color name="surface_dark">#1E1E1E</color>
     <color name="date_background">#33FFFFFF</color>
     <color name="notification_background">#FFFFFF</color>
 
+
     <!-- New Primary and Secondary Colors -->
-    <color name="primary">#0d0823</color>
-    <color name="primary_light">#2d2842</color>
-    <color name="primary_dark">#060412</color>
+    <color name="primary">#000000</color>
+    <color name="primary_light">#333333</color>
+    <color name="primary_dark">#0d0d0d</color>
 
     <!-- Secondary color (a complementary color to the primary) -->
-    <color name="secondary">#f0e68c</color>
-    <color name="secondary_light">#fff5ba</color>
-    <color name="secondary_dark">#beb460</color>
+    <color name="secondary">#1a1a1a</color>
+    <color name="secondary_light">#4d4d4d</color>
+    <color name="secondary_dark">#0a0a0a</color>
 
     <!-- Additional colors for various purposes -->
     <color name="background">#f5f5f7</color>
@@ -43,4 +43,11 @@
     <color name="on_background">#000000</color>
     <color name="on_surface">#000000</color>
     <color name="on_error">#ffffff</color>
+
+
+
+    <color name="menu_item_text_color">#FFFFFF</color>
+    <color name="menu_background">#000000</color>
+    <color name="item_background_color">#555555</color>
+
 </resources>
