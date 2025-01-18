@@ -178,7 +178,7 @@ public class projectDetails extends AppCompatActivity {
         dialogView.findViewById(R.id.btnOk).setOnClickListener(v -> {
             String taskName = editTextTaskName.getText().toString();
             if (!taskName.isEmpty()) {
-                Task newTask = new Task(taskName, "", "", "", 0);
+                Task newTask = new Task(taskName, "", "", "", 0,5);
                 projectList.get(projectPosition).addTask(newTask);
                 MaterialCardView taskCard = createTaskCard(newTask.getTaskName(), newTask.getCompletion());
                 tasksContainer.addView(taskCard);

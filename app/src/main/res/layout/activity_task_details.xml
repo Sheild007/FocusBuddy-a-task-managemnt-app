@@ -143,7 +143,22 @@
                     android:text="No Deadline"
                     android:textColor="@color/white" />
             </LinearLayout>
+            <!-- activity_task_details.xml -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="Priority"
+                app:boxBackgroundColor="@color/surface_dark"
+                app:hintTextColor="@color/gray">
 
+                <Spinner
+                    android:id="@+id/prioritySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/priority_array"
+                    android:spinnerMode="dropdown"/>
+            </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

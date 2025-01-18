@@ -1,3 +1,4 @@
+// Task.java
 package com.example.focusbuddy;
 
 import java.io.Serializable;
@@ -13,17 +14,19 @@ public class Task implements Serializable {
     private String taskTime;
     private String taskDate;
     private int completion; // Completion percentage (0-100)
+    private int priority; // Priority field (1-5, 1 being highest)
     private List<Task> subTasks; // Dynamic array for subtasks
     private boolean isDeleted = false; // Flag to mark task as deleted
 
     // Constructor
-    public Task(String taskName, String taskDescription, String taskTime, String taskDate, int completion) {
+    public Task(String taskName, String taskDescription, String taskTime, String taskDate, int completion, int priority) {
         this.id = generateId();
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskTime = taskTime;
         this.taskDate = taskDate;
         this.completion = completion;
+        this.priority = priority;
         this.subTasks = new ArrayList<>(); // Initialize the dynamic array
     }
 
@@ -82,6 +85,14 @@ public class Task implements Serializable {
         this.completion = completion;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     public List<Task> getSubTasks() {
         return subTasks;
     }
@@ -117,6 +128,7 @@ public class Task implements Serializable {
                 ", taskTime='" + taskTime + '\'' +
                 ", taskDate='" + taskDate + '\'' +
                 ", completion=" + completion +
+                ", priority=" + priority +
                 ", subTasks=" + subTasks +
                 ", isDeleted=" + isDeleted +
                 '}';
@@ -132,6 +144,7 @@ public class Task implements Serializable {
         json.append("\"taskTime\":\"").append(taskTime).append("\",");
         json.append("\"taskDate\":\"").append(taskDate).append("\",");
         json.append("\"completion\":").append(completion).append(",");
+        json.append("\"priority\":").append(priority).append(",");
         json.append("\"isDeleted\":").append(isDeleted).append(",");
         json.append("\"subTasks\":[");
         for (int i = 0; i < subTasks.size(); i++) {
