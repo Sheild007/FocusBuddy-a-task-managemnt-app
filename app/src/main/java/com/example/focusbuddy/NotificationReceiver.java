@@ -107,6 +107,11 @@ public class NotificationReceiver extends BroadcastReceiver {
             for (Task task : project.getTasks()) {
                 if (task.getId().equals(taskId)) {
                     task.setCompletion(completion);
+                    if (completion == 100) {
+                        // Cancel notifications when task is completed
+                        CustomNotificationManager notificationManager = new CustomNotificationManager(context);
+                        notificationManager.cancelAllNotifications(task);
+                    }
                     saveProjects(context, projects);
                     return;
                 }
