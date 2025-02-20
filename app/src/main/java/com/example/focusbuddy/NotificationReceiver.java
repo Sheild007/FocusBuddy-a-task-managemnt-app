@@ -35,11 +35,12 @@ public class NotificationReceiver extends BroadcastReceiver {
         if (action != null && action.startsWith("UPDATE_COMPLETION_")) {
             int completion = Integer.parseInt(action.split("_")[2]);
             String taskId = intent.getStringExtra("taskId");
+            int notificationId = intent.getIntExtra("notificationId", 1);
             updateTaskCompletion(context, taskId, completion);
 
-            // Cancel the notification
+            // Cancel the notification using the specific notification ID
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(1);
+            notificationManager.cancel(notificationId);
             return;
         }
 
@@ -56,11 +57,14 @@ public class NotificationReceiver extends BroadcastReceiver {
         String taskName = intent.getStringExtra("taskName");
         String taskDeadline = intent.getStringExtra("taskDeadline");
         String taskId = intent.getStringExtra("taskId");
+        // Get the notification ID from the intent
+        int notificationId = intent.getIntExtra("notificationId", 1);
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationId, notificationIntent, 
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        RemoteViews customContentView = getCustomContentView(context, taskId);
+        RemoteViews customContentView = getCustomContentView(context, taskId, notificationId);
         customContentView.setTextViewText(R.id.taskNameTextView, taskName);
         customContentView.setTextViewText(R.id.deadlineTextView, taskDeadline);
 
@@ -69,36 +73,43 @@ public class NotificationReceiver extends BroadcastReceiver {
         customContentView.setTextViewText(R.id.quoteTextView, quote);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.icon) // Replace with an existing drawable resource
+                .setSmallIcon(R.drawable.icon)
                 .setContentTitle("Task Reminder")
-                .setContentText("Tap to view details") // Text before expanding
+                .setContentText("Tap to view details")
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomBigContentView(customContentView) // Custom layout when expanded
+                .setCustomBigContentView(customContentView)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC); // Ensure visibility on lock screen
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-        notificationManager.notify(1, builder.build());
+        // Use the specific notification ID when showing the notification
+        notificationManager.notify(notificationId, builder.build());
     }
 
-    private RemoteViews getCustomContentView(Context context, String taskId) {
+    private RemoteViews getCustomContentView(Context context, String taskId, int notificationId) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_progress);
 
-        // Set up button click intents
-        remoteViews.setOnClickPendingIntent(R.id.button25, getPendingIntent(context, taskId, 25));
-        remoteViews.setOnClickPendingIntent(R.id.button50, getPendingIntent(context, taskId, 50));
-        remoteViews.setOnClickPendingIntent(R.id.button75, getPendingIntent(context, taskId, 75));
-        remoteViews.setOnClickPendingIntent(R.id.button100, getPendingIntent(context, taskId, 100));
+        // Set up button click intents with the notification ID
+        remoteViews.setOnClickPendingIntent(R.id.button25, getPendingIntent(context, taskId, 25, notificationId));
+        remoteViews.setOnClickPendingIntent(R.id.button50, getPendingIntent(context, taskId, 50, notificationId));
+        remoteViews.setOnClickPendingIntent(R.id.button75, getPendingIntent(context, taskId, 75, notificationId));
+        remoteViews.setOnClickPendingIntent(R.id.button100, getPendingIntent(context, taskId, 100, notificationId));
 
         return remoteViews;
     }
 
-    private PendingIntent getPendingIntent(Context context, String taskId, int completion) {
+    private PendingIntent getPendingIntent(Context context, String taskId, int completion, int notificationId) {
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.setAction("UPDATE_COMPLETION_" + completion);
         intent.putExtra("taskId", taskId);
-        return PendingIntent.getBroadcast(context, taskId.hashCode() + completion, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        intent.putExtra("notificationId", notificationId);
+        return PendingIntent.getBroadcast(
+            context, 
+            (taskId + completion + notificationId).hashCode(), 
+            intent, 
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
     }
 
     private void updateTaskCompletion(Context context, String taskId, int completion) {

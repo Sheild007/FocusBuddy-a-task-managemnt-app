@@ -107,11 +107,13 @@ public class CustomNotificationManager {
         intent.putExtra("taskDeadline", task.getTaskDate());
         intent.putExtra("taskId", task.getId());
         
-        // Use unique request code for each notification
-        int requestCode = (task.getId() + String.valueOf(time)).hashCode();
+        // Create a unique notification ID based on task ID and time
+        int notificationId = (task.getId() + String.valueOf(time)).hashCode();
+        intent.putExtra("notificationId", notificationId);
+        
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
             context, 
-            requestCode, 
+            notificationId, 
             intent, 
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
